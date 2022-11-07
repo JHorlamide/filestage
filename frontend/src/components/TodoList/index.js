@@ -34,7 +34,7 @@ const TodoList = React.forwardRef(
 
     return (
       <Box ref={ref ?? null} data-testid="todo-list">
-        <Draggable key={todo.id} draggableId={todo.id} index={index}>
+        <Draggable key={todo._id} draggableId={todo._id} index={index}>
           {(provided) => (
             <Box
               display="flex"
@@ -48,7 +48,7 @@ const TodoList = React.forwardRef(
               <Checkbox
                 name="completed"
                 checked={!!todo.completed}
-                onChange={() => toggleTodoCompleted(todo.id)}
+                onChange={() => toggleTodoCompleted(todo._id)}
               ></Checkbox>
 
               <Box flexGrow={1}>
@@ -73,7 +73,7 @@ const TodoList = React.forwardRef(
               <Button
                 className={classes.deleteTodo}
                 startIcon={<Icon>delete</Icon>}
-                onClick={() => deleteTodo(todo.id)}
+                onClick={() => deleteTodo(todo._id)}
               >
                 Delete
               </Button>

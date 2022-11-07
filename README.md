@@ -14,6 +14,6 @@ to start the application use docker compose:
 
 once the app is running you can open:
 
-http://localhost:3000
+http://localhost:3006
 
 on your browser.

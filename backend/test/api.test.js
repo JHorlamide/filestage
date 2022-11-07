@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const supertest = require('supertest');
 const app = require('../src/api');
-const database = require('../src/database');
+const database = require('../src/config/database');
 
 let firstTodoIdTest = '';
 const firstTodosBody = {

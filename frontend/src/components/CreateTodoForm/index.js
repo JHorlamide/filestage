@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createTodo } from "../../api/axios";
 import PropTypes from "prop-types";
 import dateformat from "dateformat";
+import toast from "react-hot-toast";
 
 const useStyles = makeStyles({
   addTodoButton: { marginLeft: 5 },
@@ -11,8 +12,8 @@ const useStyles = makeStyles({
 });
 
 const CreateTodoForm = ({ setTodos }) => {
-  const default_date = dateformat(new Date(), "yyyy-mm-dd");
   const classes = useStyles();
+  const default_date = dateformat(new Date(), "yyyy-mm-dd");
   const [error, setError] = useState("");
   const [newTodo, setNewTodo] = useState({
     text: "",
@@ -30,6 +31,7 @@ const CreateTodoForm = ({ setTodos }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const emptyFields = Object.keys(newTodo).some((field) => {
       return !newTodo[field];
     });
@@ -39,18 +41,20 @@ const CreateTodoForm = ({ setTodos }) => {
       return;
     }
 
-    const todo = {
+    const todoPayload = {
       text: newTodo.text,
       due_date: new Date(newTodo.due_date).getTime(),
     };
 
-    createTodo(todo)
+    createTodo(todoPayload)
       .then((todo) => {
-        setTodos((prevTodos) => [...prevTodos, todo]);
+        setTodos((prevTodos) => [...prevTodos, todo.todo]);
         setNewTodo({ text: "", due_date: default_date });
+        toast.success(todo.message);
       })
       .catch((error) => {
         setError(error.toString());
+        toast.error(error.message);
       });
   };
 
@@ -117,6 +121,7 @@ const CreateTodoForm = ({ setTodos }) => {
 
           <Button
             role="button"
+            type="submit"
             sx={{ marginX: 1, marginBottom: 3 }}
             className={classes.addTodoButton}
             startIcon={<Icon>add</Icon>}

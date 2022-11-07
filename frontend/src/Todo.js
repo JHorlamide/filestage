@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
+import { Toaster } from "react-hot-toast";
 import makeStyles from "@mui/styles/makeStyles";
 import { Container, Typography, Paper, Box } from "@mui/material";
 import CreateTodoForm from "./components/CreateTodoForm";
@@ -58,7 +59,7 @@ const Todo = () => {
       index={index}
       todo={todo}
       ref={index + 1 === filteredTodo.length ? lastTodosRef : null}
-      rowKey={(todo) => todo.id}
+      rowKey={(todo) => todo._id}
       deleteTodo={deleteTodo}
       toggleTodoCompleted={toggleTodoCompleted}
     />
@@ -66,6 +67,8 @@ const Todo = () => {
 
   return (
     <Container maxWidth="md">
+      <Toaster toastOptions={{ duration: "5000" }} />
+
       {/* Create Todo Component */}
       <CreateTodoForm setTodos={setTodos} />
 

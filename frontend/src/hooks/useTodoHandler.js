@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { getTodos, toggleCompleted, removeTodo } from "../api/axios";
 import isOverdue from "../helper/isOverdue";
 
@@ -30,6 +31,7 @@ const useTodoHandler = (page_number = 0) => {
         if (signal.aborted) return;
         setIsError(true);
         setError({ message: error.message });
+        toast.error(error.message);
       });
 
     // Anytime the component unmount it will abort the controller;
@@ -56,24 +58,32 @@ const useTodoHandler = (page_number = 0) => {
   };
 
   const toggleTodoCompleted = (id) => {
-    const completed = !todos.find((todo) => todo.id === id).completed;
+    const completed = !todos.find((todo) => todo._id === id).completed;
 
-    toggleCompleted({ completed }, id).then(() => {
-      const newTodos = [...todos];
-      const modifiedTodoIndex = newTodos.findIndex((todo) => todo.id === id);
-      newTodos[modifiedTodoIndex] = {
-        ...newTodos[modifiedTodoIndex],
-        completed: !newTodos[modifiedTodoIndex].completed,
-      };
+    toggleCompleted({ completed }, id)
+      .then(() => {
+        const newTodos = [...todos];
+        const modifiedTodoIndex = newTodos.findIndex((todo) => todo._id === id);
+        newTodos[modifiedTodoIndex] = {
+          ...newTodos[modifiedTodoIndex],
+          completed: !newTodos[modifiedTodoIndex].completed,
+        };
 
-      setTodos(newTodos);
-    });
+        setTodos(newTodos);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   const deleteTodo = (id) => {
-    removeTodo(id).then(() => {
-      setTodos(todos.filter((todo) => todo.id !== id));
-    });
+    removeTodo(id)
+      .then(() => {
+        setTodos(todos.filter((todo) => todo._id !== id));
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   return {

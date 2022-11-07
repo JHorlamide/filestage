@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 
 const http = require('http');
-const database = require('../src/database');
+const database = require("../src/config/database");
 const app = require('../src/api');
 
 function onError(error) {
@@ -20,6 +20,7 @@ async function main() {
   } catch (error) {
     onError(error);
   }
+
   const server = http.createServer(app);
   server.listen(port);
 
